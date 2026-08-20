@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Spese Local" />
+    <meta name="theme-color" content="#0d1720" />
+    <title>Spese Local</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">MyBudget</span>
+          <h1>Spese</h1>
+          <p id="periodLabel">Nessun periodo</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="filterToggle" class="icon-button filter-toggle" title="Filtri" type="button" aria-expanded="false" aria-controls="filtersPanel">
+            <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 5h16l-6.2 7.2v5.2l-3.6 1.8v-7L4 5Z"></path>
+            </svg>
+          </button>
+          <button id="themeToggle" class="icon-button" title="Cambia tema" type="button" aria-label="Cambia tema">
+            <svg class="topbar-icon theme-icon-light" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 4V2.5"></path>
+              <path d="M12 21.5V20"></path>
+              <path d="m4.9 4.9-1-1"></path>
+              <path d="m20.1 20.1-1-1"></path>
+              <path d="M4 12H2.5"></path>
+              <path d="M21.5 12H20"></path>
+              <path d="m4.9 19.1-1 1"></path>
+              <path d="m20.1 3.9-1 1"></path>
+              <circle cx="12" cy="12" r="4"></circle>
+            </svg>
+            <svg class="topbar-icon theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14.6A7.7 7.7 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"></path>
+            </svg>
+          </button>
+          <button id="actionToggle" class="icon-button" title="Importa o esporta" type="button" aria-expanded="false" aria-controls="actionMenu">
+            <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 7.5h12"></path>
+              <path d="M6 12h12"></path>
+              <path d="M6 16.5h12"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <section id="actionMenu" class="action-menu hidden" aria-label="Azioni dati">
+        <label>
+          <input id="importFile" type="file" accept=".json,.numbers,application/json" hidden />
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 4v11"></path>
+            <path d="m8 11 4 4 4-4"></path>
+            <path d="M5 20h14"></path>
+          </svg>
+          <span>Importa dati</span>
+        </label>
+        <button id="exportButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 20V9"></path>
+            <path d="m8 13 4-4 4 4"></path>
+            <path d="M5 4h14"></path>
+          </svg>
+          <span>Esporta backup</span>
+        </button>
+      </section>
+
+      <section id="filtersPanel" class="filters hidden" aria-label="Filtri dashboard">
+        <label>
+          <span>Anno</span>
+          <select id="yearFilter"></select>
+        </label>
+        <label>
+          <span>Mese</span>
+          <select id="monthFilter"></select>
+        </label>
+        <label>
+          <span>Categoria</span>
+          <select id="categoryFilter"></select>
+        </label>
+        <label>
+          <span>Conto patrimonio</span>
+          <select id="accountFilter"></select>
+        </label>
+      </section>
+
+      <nav class="app-tabs" aria-label="Viste">
+        <button class="active" type="button" data-view-button="overview">
+          <svg class="tab-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 11.5 12 5l8 6.5"></path>
+            <path d="M6.5 10.5V19h11v-8.5"></path>
+            <path d="M9.5 19v-5h5v5"></path>
+          </svg>
+          <span>Overview</span>
+        </button>
+        <button type="button" data-view-button="dashboards">
+          <span class="tab-icon tab-icon-dashboard" aria-hidden="true"></span>
+          <span>Grafici</span>
+        </button>
+        <button type="button" data-view-button="year">
+          <svg class="tab-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 4.5h12a2 2 0 0 1 2 2V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"></path>
+            <path d="M8 3v4"></path>
+            <path d="M16 3v4"></path>
+            <path d="M4 9h16"></path>
+            <path d="M8 13h2"></path>
+            <path d="M13 13h3"></path>
+            <path d="M8 17h5"></path>
+          </svg>
+          <span>Anno</span>
+        </button>
+        <button type="button" data-view-button="manage">
+          <svg class="tab-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 5h10a2 2 0 0 1 2 2v12H5V7a2 2 0 0 1 2-2Z"></path>
+            <path d="M8 9h8"></path>
+            <path d="M8 13h5"></path>
+            <path d="M17 14v5"></path>
+            <path d="M14.5 16.5h5"></path>
+          </svg>
+          <span>Dati</span>
+        </button>
+      </nav>
+
+      <div id="floatingChartTooltip" class="floating-chart-tooltip hidden" aria-live="polite"></div>
+
+      <section id="emptyPanel" class="status-panel">
+        <h2>Importa i dati</h2>
+        <p>Seleziona il JSON generato dal convertitore locale. Dopo l'import i dati restano salvati nel browser.</p>
+      </section>
+
+      <section class="view active" data-view="overview">
+        <section class="kpi-grid" aria-label="Indicatori">
+          <article class="kpi kpi-wide">
+            <span class="kpi-label-row">Spesa mese <em id="kpiDailyInline">0,00€/gg</em></span>
+            <div class="kpi-value-row">
+              <strong id="kpiExpense">0,00 €</strong>
+              <small id="kpiExpenseAvg" class="delta-pill neutral">media n.d.</small>
+            </div>
+          </article>
+          <article class="kpi kpi-wide">
+            <span>Entrate</span>
+            <div class="kpi-value-row">
+              <strong id="kpiIncome">0,00 €</strong>
+              <small id="kpiIncomeAvg" class="delta-pill neutral">media n.d.</small>
+            </div>
+          </article>
+          <article class="kpi kpi-wide">
+            <span>Saldo mese</span>
+            <div class="kpi-value-row">
+              <strong id="kpiBalance">0,00 €</strong>
+              <small id="kpiBalanceAvg" class="delta-pill neutral">media n.d.</small>
+            </div>
+          </article>
+        </section>
+
+        <section class="section-block hero-panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Patrimonio</span>
+              <h2>Conti e investimenti</h2>
+            </div>
+            <div class="asset-total-box">
+              <strong id="assetTotal" class="asset-total">0,00 €</strong>
+              <small id="assetDelta" class="delta-pill neutral">n.d.</small>
+            </div>
+          </div>
+          <div class="wealth-kpis">
+            <article><span>Conti</span><strong id="accountsTotal">0,00 €</strong><small id="accountsDelta" class="delta-pill neutral">n.d.</small></article>
+            <article><span>Investimenti</span><strong id="investmentsTotal">0,00 €</strong><small id="investmentsDelta" class="delta-pill neutral">n.d.</small></article>
+            <article><span>Rendimento</span><strong id="investmentsReturn">n.d.</strong><small id="investmentsReturnDelta" class="delta-pill neutral">mese corrente</small></article>
+          </div>
+          <div id="assetTrendChart" class="chart"></div>
+          <div class="two-columns">
+            <div>
+              <h3>Conti</h3>
+              <div id="accountsList" class="mini-list"></div>
+            </div>
+            <div>
+              <h3>Investimenti</h3>
+              <div id="investmentsList" class="mini-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div><span class="eyebrow">Movimenti</span><h2>Ultime righe</h2></div>
+          </div>
+          <div id="transactionsList" class="transaction-list"></div>
+        </section>
+      </section>
+
+      <section class="view" data-view="dashboards">
+        <section class="dashboard-toolbar">
+          <label>
+            Investimento
+            <select id="investmentFilter"></select>
+          </label>
+          <label>
+            Evidenzia
+            <select id="assetModeFilter">
+              <option value="total">Totale</option>
+              <option value="accounts">Conti</option>
+              <option value="investments">Investimenti</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="charts-grid dashboard-grid">
+          <article id="chartDetail" class="chart-detail wide hidden"></article>
+          <article class="chart-block wide featured">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Timeline</span><h2>Andamento patrimonio</h2></div>
+            </div>
+            <div id="dashboardAssetTrend" class="chart chart-large"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Composizione</span><h2>Patrimonio</h2></div>
+            </div>
+            <div id="wealthPieChart" class="pie-wrap"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Spese</span><h2>Per categoria</h2></div>
+            </div>
+            <div id="categoryChart" class="bar-list"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Distribuzione</span><h2>Categorie</h2></div>
+            </div>
+            <div id="categoryPieChart" class="pie-wrap"></div>
+          </article>
+          <article class="chart-block wide featured">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Ultimi 12 mesi</span><h2>Spese vs entrate</h2></div>
+            </div>
+            <div id="monthlyChart" class="chart chart-large"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Mese</span><h2>Spesa giornaliera</h2></div>
+            </div>
+            <div id="dailyChart" class="chart"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Conti</span><h2>Saldo per conto</h2></div>
+            </div>
+            <div id="accountsBarChart" class="bar-list"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Investimenti</span><h2>Valore posizioni</h2></div>
+            </div>
+            <div id="investmentsBarChart" class="bar-list"></div>
+          </article>
+          <article class="chart-block wide featured">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Investimento selezionato</span><h2>Andamento ETF/asset</h2></div>
+            </div>
+            <div id="investmentTrendChart" class="chart chart-large"></div>
+          </article>
+          <article class="chart-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Top</span><h2>Spese maggiori</h2></div>
+            </div>
+            <div id="topExpenses" class="transaction-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section class="view" data-view="year">
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Vista annuale</span>
+              <h2 id="yearTitle">Anno</h2>
+            </div>
+          </div>
+          <div class="year-summary" id="yearSummary"></div>
+          <div id="yearMonthlyBars" class="year-bars"></div>
+        </section>
+        <section class="two-columns">
+          <article class="section-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Anno</span><h2>Categorie principali</h2></div>
+            </div>
+            <div id="yearCategories" class="bar-list"></div>
+          </article>
+          <article class="section-block">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Anno</span><h2>Patrimonio mese per mese</h2></div>
+            </div>
+            <div id="yearAssetTable" class="table-list"></div>
+          </article>
+        </section>
+        <section class="section-block averages-panel">
+          <div class="section-heading compact">
+            <div><span class="eyebrow">Medie</span><h2>Entrate e uscite</h2></div>
+          </div>
+          <div class="average-grid">
+            <article>
+              <span>Uscite mensili</span>
+              <strong id="avgMonthlyExpense">0,00 €</strong>
+              <small id="avgMonthlyExpenseDetail">media anno</small>
+            </article>
+            <article>
+              <span>Entrate mensili</span>
+              <strong id="avgMonthlyIncome">0,00 €</strong>
+              <small id="avgMonthlyIncomeDetail">media anno</small>
+            </article>
+            <article>
+              <span>Stipendio</span>
+              <strong id="avgSalary14">0,00 €</strong>
+              <small id="avgSalary14Detail">14 mensilità</small>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" data-view="manage">
+        <nav class="manage-switch" aria-label="Sezioni gestione">
+          <button class="active" type="button" data-manage-button="movements">Movimenti</button>
+          <button type="button" data-manage-button="wealth">Patrimonio</button>
+          <button type="button" data-manage-button="settings">Setup</button>
+        </nav>
+
+        <section class="manage-pane active" data-manage-pane="movements">
+          <section class="section-block">
+            <div class="section-heading">
+              <div><span class="eyebrow">Movimenti</span><h2>Nuovo movimento</h2></div>
+            </div>
+            <form id="transactionForm" class="data-form">
+              <label>Data <input name="date" type="date" required /></label>
+              <label>Tipo
+                <select name="type">
+                  <option value="expense">Spesa</option>
+                  <option value="income">Guadagno</option>
+                </select>
+              </label>
+              <label>Importo <input name="amount" inputmode="decimal" placeholder="0,00" required /></label>
+              <label>Categoria <select name="category" id="transactionCategory"></select></label>
+              <label>Descrizione <input name="description" placeholder="Supermercato" /></label>
+              <button class="primary-button" type="submit">Aggiungi movimento</button>
+            </form>
+          </section>
+          <section class="section-block history-panel">
+            <div class="section-heading">
+              <div><span class="eyebrow">Storico</span><h2>Info tracciate</h2></div>
+            </div>
+            <div id="transactionManageList" class="editable-list"></div>
+          </section>
+        </section>
+
+        <section class="manage-pane" data-manage-pane="wealth">
+          <section class="section-block investment-workbench">
+            <div class="section-heading">
+              <div><span class="eyebrow">Fine mese</span><h2>Investimenti e fondi</h2></div>
+            </div>
+            <div id="investmentHistoryList" class="monthly-entry-list"></div>
+            <form id="investmentForm" class="data-form investment-form">
+              <label>Mese <input name="month_start" type="month" required /></label>
+              <label>Investimento <select name="investment" id="holdingInvestment"></select></label>
+              <label>Valore <input name="amount" inputmode="decimal" required /></label>
+              <label>Rendimento % <input name="performance_pct" inputmode="decimal" placeholder="2,5" /></label>
+              <label>Rendimento € <input name="performance_eur" inputmode="decimal" placeholder="0,00" /></label>
+              <button class="primary-button" type="submit">Salva investimento</button>
+            </form>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div><span class="eyebrow">Fine mese</span><h2>Saldo conti</h2></div>
+            </div>
+            <div id="accountHistoryList" class="monthly-entry-list"></div>
+            <form id="accountForm" class="data-form">
+              <label>Mese <input name="month_start" type="month" required /></label>
+              <label>Conto <select name="account" id="balanceAccount"></select></label>
+              <label>Importo <input name="amount" inputmode="decimal" required /></label>
+              <button class="primary-button" type="submit">Salva saldo conto</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="manage-pane" data-manage-pane="settings">
+          <section class="section-block">
+            <div class="section-heading">
+              <div><span class="eyebrow">Categorie</span><h2>Nuova categoria</h2></div>
+            </div>
+            <form id="categoryForm" class="data-form compact-form">
+              <label>Nome <input name="name" required placeholder="Viaggi" /></label>
+              <button class="secondary-button" type="submit">Aggiungi categoria</button>
+            </form>
+            <div id="categoryChips" class="chips-list"></div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div><span class="eyebrow">Anagrafiche</span><h2>Conti e investimenti</h2></div>
+            </div>
+            <form id="masterDataForm" class="data-form compact-form">
+              <label>Tipo
+                <select name="kind">
+                  <option value="accounts">Conto</option>
+                  <option value="investments">Investimento</option>
+                </select>
+              </label>
+              <label>Nome <input name="name" required /></label>
+              <button class="secondary-button" type="submit">Aggiungi</button>
+            </form>
+            <div id="masterDataList" class="chips-list editable-chips"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <section id="editSheet" class="edit-sheet hidden" aria-modal="true" role="dialog">
+      <button class="edit-backdrop" type="button" data-edit-close aria-label="Chiudi modifica"></button>
+      <form id="editForm" class="edit-panel">
+        <div class="edit-handle" aria-hidden="true"></div>
+        <header class="edit-header">
+          <div>
+            <span class="eyebrow">Modifica</span>
+            <h2 id="editTitle">Elemento</h2>
+          </div>
+          <button id="editCancel" class="sheet-icon-button" type="button" aria-label="Chiudi">×</button>
+        </header>
+        <div id="editFields" class="edit-fields"></div>
+        <footer class="edit-actions">
+          <button class="secondary-button" type="button" data-edit-close>Annulla</button>
+          <button class="primary-button" type="submit">Salva modifiche</button>
+        </footer>
+      </form>
+    </section>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
